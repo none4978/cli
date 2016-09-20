@@ -115,9 +115,6 @@ var _ = Describe("API Command", func() {
 						Expect(err).ToNot(HaveOccurred())
 
 						Expect(fakeActor.SetTargetCallCount()).To(Equal(1))
-						url, skipSSLValidation := fakeActor.SetTargetArgsForCall(0)
-						Expect(url).To(Equal("https://" + CCAPI))
-						Expect(skipSSLValidation).To(BeFalse())
 
 						Expect(fakeUI.Out).To(Say("Setting api endpoint to %s...", CCAPI))
 						Expect(fakeUI.Out).To(Say("OK"))
@@ -139,9 +136,6 @@ var _ = Describe("API Command", func() {
 							Expect(err).ToNot(HaveOccurred())
 
 							Expect(fakeActor.SetTargetCallCount()).To(Equal(1))
-							url, skipSSLValidation := fakeActor.SetTargetArgsForCall(0)
-							Expect(url).To(Equal("https://" + CCAPI))
-							Expect(skipSSLValidation).To(BeTrue())
 
 							Expect(fakeUI.Out).To(Say("Setting api endpoint to %s...", CCAPI))
 							Expect(fakeUI.Out).To(Say("OK"))
@@ -179,9 +173,6 @@ var _ = Describe("API Command", func() {
 					Expect(err).ToNot(HaveOccurred())
 
 					Expect(fakeActor.SetTargetCallCount()).To(Equal(1))
-					url, skipSSLValidation := fakeActor.SetTargetArgsForCall(0)
-					Expect(url).To(Equal(CCAPI))
-					Expect(skipSSLValidation).To(BeFalse())
 
 					Expect(fakeUI.Out).To(Say("Setting api endpoint to %s...", CCAPI))
 					Expect(fakeUI.Out).To(Say("Warning: Insecure http API endpoint detected: secure https API endpoints are recommended"))

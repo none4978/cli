@@ -12,13 +12,10 @@ type FakeAPIConfigActor struct {
 	ClearTargetStub        func()
 	clearTargetMutex       sync.RWMutex
 	clearTargetArgsForCall []struct{}
-	SetTargetStub          func(CCAPI string, skipSSLValidation bool) (configactions.Warnings, error)
+	SetTargetStub          func() (configactions.Warnings, error)
 	setTargetMutex         sync.RWMutex
-	setTargetArgsForCall   []struct {
-		CCAPI             string
-		skipSSLValidation bool
-	}
-	setTargetReturns struct {
+	setTargetArgsForCall   []struct{}
+	setTargetReturns       struct {
 		result1 configactions.Warnings
 		result2 error
 	}
@@ -42,16 +39,13 @@ func (fake *FakeAPIConfigActor) ClearTargetCallCount() int {
 	return len(fake.clearTargetArgsForCall)
 }
 
-func (fake *FakeAPIConfigActor) SetTarget(CCAPI string, skipSSLValidation bool) (configactions.Warnings, error) {
+func (fake *FakeAPIConfigActor) SetTarget() (configactions.Warnings, error) {
 	fake.setTargetMutex.Lock()
-	fake.setTargetArgsForCall = append(fake.setTargetArgsForCall, struct {
-		CCAPI             string
-		skipSSLValidation bool
-	}{CCAPI, skipSSLValidation})
-	fake.recordInvocation("SetTarget", []interface{}{CCAPI, skipSSLValidation})
+	fake.setTargetArgsForCall = append(fake.setTargetArgsForCall, struct{}{})
+	fake.recordInvocation("SetTarget", []interface{}{})
 	fake.setTargetMutex.Unlock()
 	if fake.SetTargetStub != nil {
-		return fake.SetTargetStub(CCAPI, skipSSLValidation)
+		return fake.SetTargetStub()
 	} else {
 		return fake.setTargetReturns.result1, fake.setTargetReturns.result2
 	}
@@ -61,12 +55,6 @@ func (fake *FakeAPIConfigActor) SetTargetCallCount() int {
 	fake.setTargetMutex.RLock()
 	defer fake.setTargetMutex.RUnlock()
 	return len(fake.setTargetArgsForCall)
-}
-
-func (fake *FakeAPIConfigActor) SetTargetArgsForCall(i int) (string, bool) {
-	fake.setTargetMutex.RLock()
-	defer fake.setTargetMutex.RUnlock()
-	return fake.setTargetArgsForCall[i].CCAPI, fake.setTargetArgsForCall[i].skipSSLValidation
 }
 
 func (fake *FakeAPIConfigActor) SetTargetReturns(result1 configactions.Warnings, result2 error) {

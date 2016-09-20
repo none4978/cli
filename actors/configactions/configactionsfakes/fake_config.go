@@ -8,36 +8,36 @@ import (
 )
 
 type FakeConfig struct {
-	SetTargetInformationStub        func(api string, apiVersion string, auth string, loggregator string, doppler string, uaa string, sslDisabled bool)
+	SetTargetInformationStub        func(api string, apiVersion string, auth string, loggregator string, doppler string, uaa string, skipSSLValidation bool)
 	setTargetInformationMutex       sync.RWMutex
 	setTargetInformationArgsForCall []struct {
-		api         string
-		apiVersion  string
-		auth        string
-		loggregator string
-		doppler     string
-		uaa         string
-		sslDisabled bool
+		api               string
+		apiVersion        string
+		auth              string
+		loggregator       string
+		doppler           string
+		uaa               string
+		skipSSLValidation bool
 	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *FakeConfig) SetTargetInformation(api string, apiVersion string, auth string, loggregator string, doppler string, uaa string, sslDisabled bool) {
+func (fake *FakeConfig) SetTargetInformation(api string, apiVersion string, auth string, loggregator string, doppler string, uaa string, skipSSLValidation bool) {
 	fake.setTargetInformationMutex.Lock()
 	fake.setTargetInformationArgsForCall = append(fake.setTargetInformationArgsForCall, struct {
-		api         string
-		apiVersion  string
-		auth        string
-		loggregator string
-		doppler     string
-		uaa         string
-		sslDisabled bool
-	}{api, apiVersion, auth, loggregator, doppler, uaa, sslDisabled})
-	fake.recordInvocation("SetTargetInformation", []interface{}{api, apiVersion, auth, loggregator, doppler, uaa, sslDisabled})
+		api               string
+		apiVersion        string
+		auth              string
+		loggregator       string
+		doppler           string
+		uaa               string
+		skipSSLValidation bool
+	}{api, apiVersion, auth, loggregator, doppler, uaa, skipSSLValidation})
+	fake.recordInvocation("SetTargetInformation", []interface{}{api, apiVersion, auth, loggregator, doppler, uaa, skipSSLValidation})
 	fake.setTargetInformationMutex.Unlock()
 	if fake.SetTargetInformationStub != nil {
-		fake.SetTargetInformationStub(api, apiVersion, auth, loggregator, doppler, uaa, sslDisabled)
+		fake.SetTargetInformationStub(api, apiVersion, auth, loggregator, doppler, uaa, skipSSLValidation)
 	}
 }
 
@@ -50,7 +50,7 @@ func (fake *FakeConfig) SetTargetInformationCallCount() int {
 func (fake *FakeConfig) SetTargetInformationArgsForCall(i int) (string, string, string, string, string, string, bool) {
 	fake.setTargetInformationMutex.RLock()
 	defer fake.setTargetInformationMutex.RUnlock()
-	return fake.setTargetInformationArgsForCall[i].api, fake.setTargetInformationArgsForCall[i].apiVersion, fake.setTargetInformationArgsForCall[i].auth, fake.setTargetInformationArgsForCall[i].loggregator, fake.setTargetInformationArgsForCall[i].doppler, fake.setTargetInformationArgsForCall[i].uaa, fake.setTargetInformationArgsForCall[i].sslDisabled
+	return fake.setTargetInformationArgsForCall[i].api, fake.setTargetInformationArgsForCall[i].apiVersion, fake.setTargetInformationArgsForCall[i].auth, fake.setTargetInformationArgsForCall[i].loggregator, fake.setTargetInformationArgsForCall[i].doppler, fake.setTargetInformationArgsForCall[i].uaa, fake.setTargetInformationArgsForCall[i].skipSSLValidation
 }
 
 func (fake *FakeConfig) Invocations() map[string][][]interface{} {

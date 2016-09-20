@@ -10,9 +10,14 @@ type CloudControllerClient struct {
 	dopplerEndpoint           string
 	tokenEndpoint             string
 
-	connection *Connection
+	connection        *Connection
+	skipSSLValidation bool
 }
 
-func NewCloudControllerClient() *CloudControllerClient {
-	return new(CloudControllerClient)
+func NewCloudControllerClient(APIURL string, skipSSLValidation bool) *CloudControllerClient {
+	return &CloudControllerClient{
+		cloudControllerURL: APIURL,
+		skipSSLValidation:  skipSSLValidation,
+		connection:         NewConnection(APIURL, skipSSLValidation),
+	}
 }

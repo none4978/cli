@@ -9,13 +9,10 @@ import (
 )
 
 type FakeCloudControllerClient struct {
-	TargetCFStub        func(APIURL string, skipSSLValidation bool) (cloudcontrollerv2.Warnings, error)
+	TargetCFStub        func() (cloudcontrollerv2.Warnings, error)
 	targetCFMutex       sync.RWMutex
-	targetCFArgsForCall []struct {
-		APIURL            string
-		skipSSLValidation bool
-	}
-	targetCFReturns struct {
+	targetCFArgsForCall []struct{}
+	targetCFReturns     struct {
 		result1 cloudcontrollerv2.Warnings
 		result2 error
 	}
@@ -55,20 +52,23 @@ type FakeCloudControllerClient struct {
 	tokenEndpointReturns     struct {
 		result1 string
 	}
+	SkipSSLValidationStub        func() bool
+	skipSSLValidationMutex       sync.RWMutex
+	skipSSLValidationArgsForCall []struct{}
+	skipSSLValidationReturns     struct {
+		result1 bool
+	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *FakeCloudControllerClient) TargetCF(APIURL string, skipSSLValidation bool) (cloudcontrollerv2.Warnings, error) {
+func (fake *FakeCloudControllerClient) TargetCF() (cloudcontrollerv2.Warnings, error) {
 	fake.targetCFMutex.Lock()
-	fake.targetCFArgsForCall = append(fake.targetCFArgsForCall, struct {
-		APIURL            string
-		skipSSLValidation bool
-	}{APIURL, skipSSLValidation})
-	fake.recordInvocation("TargetCF", []interface{}{APIURL, skipSSLValidation})
+	fake.targetCFArgsForCall = append(fake.targetCFArgsForCall, struct{}{})
+	fake.recordInvocation("TargetCF", []interface{}{})
 	fake.targetCFMutex.Unlock()
 	if fake.TargetCFStub != nil {
-		return fake.TargetCFStub(APIURL, skipSSLValidation)
+		return fake.TargetCFStub()
 	} else {
 		return fake.targetCFReturns.result1, fake.targetCFReturns.result2
 	}
@@ -78,12 +78,6 @@ func (fake *FakeCloudControllerClient) TargetCFCallCount() int {
 	fake.targetCFMutex.RLock()
 	defer fake.targetCFMutex.RUnlock()
 	return len(fake.targetCFArgsForCall)
-}
-
-func (fake *FakeCloudControllerClient) TargetCFArgsForCall(i int) (string, bool) {
-	fake.targetCFMutex.RLock()
-	defer fake.targetCFMutex.RUnlock()
-	return fake.targetCFArgsForCall[i].APIURL, fake.targetCFArgsForCall[i].skipSSLValidation
 }
 
 func (fake *FakeCloudControllerClient) TargetCFReturns(result1 cloudcontrollerv2.Warnings, result2 error) {
@@ -244,6 +238,31 @@ func (fake *FakeCloudControllerClient) TokenEndpointReturns(result1 string) {
 	}{result1}
 }
 
+func (fake *FakeCloudControllerClient) SkipSSLValidation() bool {
+	fake.skipSSLValidationMutex.Lock()
+	fake.skipSSLValidationArgsForCall = append(fake.skipSSLValidationArgsForCall, struct{}{})
+	fake.recordInvocation("SkipSSLValidation", []interface{}{})
+	fake.skipSSLValidationMutex.Unlock()
+	if fake.SkipSSLValidationStub != nil {
+		return fake.SkipSSLValidationStub()
+	} else {
+		return fake.skipSSLValidationReturns.result1
+	}
+}
+
+func (fake *FakeCloudControllerClient) SkipSSLValidationCallCount() int {
+	fake.skipSSLValidationMutex.RLock()
+	defer fake.skipSSLValidationMutex.RUnlock()
+	return len(fake.skipSSLValidationArgsForCall)
+}
+
+func (fake *FakeCloudControllerClient) SkipSSLValidationReturns(result1 bool) {
+	fake.SkipSSLValidationStub = nil
+	fake.skipSSLValidationReturns = struct {
+		result1 bool
+	}{result1}
+}
+
 func (fake *FakeCloudControllerClient) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
@@ -261,6 +280,8 @@ func (fake *FakeCloudControllerClient) Invocations() map[string][][]interface{} 
 	defer fake.dopplerEndpointMutex.RUnlock()
 	fake.tokenEndpointMutex.RLock()
 	defer fake.tokenEndpointMutex.RUnlock()
+	fake.skipSSLValidationMutex.RLock()
+	defer fake.skipSSLValidationMutex.RUnlock()
 	return fake.invocations
 }
 

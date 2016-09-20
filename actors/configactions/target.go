@@ -1,7 +1,7 @@
 package configactions
 
-func (actor Actor) SetTarget(CCAPI string, skipSSLValidation bool) (Warnings, error) {
-	warnings, err := actor.CloudControllerClient.TargetCF(CCAPI, skipSSLValidation)
+func (actor Actor) SetTarget() (Warnings, error) {
+	warnings, err := actor.CloudControllerClient.TargetCF()
 	if err != nil {
 		return Warnings(warnings), err
 	}
@@ -13,7 +13,7 @@ func (actor Actor) SetTarget(CCAPI string, skipSSLValidation bool) (Warnings, er
 		actor.CloudControllerClient.LoggregatorEndpoint(),
 		actor.CloudControllerClient.DopplerEndpoint(),
 		actor.CloudControllerClient.TokenEndpoint(),
-		skipSSLValidation,
+		actor.CloudControllerClient.SkipSSLValidation(),
 	)
 
 	return Warnings(warnings), nil

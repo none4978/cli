@@ -43,17 +43,14 @@ var _ = Describe("Targgeting", func() {
 		})
 
 		It("targets the passed API", func() {
-			_, err := actor.SetTarget(expectedAPI, skipSSLValidation)
+			_, err := actor.SetTarget()
 			Expect(err).ToNot(HaveOccurred())
 
 			Expect(fakeCloudControllerClient.TargetCFCallCount()).To(Equal(1))
-			api, skipSSL := fakeCloudControllerClient.TargetCFArgsForCall(0)
-			Expect(api).To(Equal(expectedAPI))
-			Expect(skipSSL).To(BeFalse())
 		})
 
 		It("sets all the target information", func() {
-			_, err := actor.SetTarget(expectedAPI, skipSSLValidation)
+			_, err := actor.SetTarget()
 			Expect(err).ToNot(HaveOccurred())
 
 			Expect(fakeConfig.SetTargetInformationCallCount()).To(Equal(1))

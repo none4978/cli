@@ -31,6 +31,10 @@ func (client *CloudControllerClient) TokenEndpoint() string {
 	return client.tokenEndpoint
 }
 
+func (client *CloudControllerClient) SkipSSLValidation() bool {
+	return client.skipSSLValidation
+}
+
 func (client *CloudControllerClient) Info() (APIInformation, Warnings, error) {
 	response, err := http.Get(fmt.Sprintf("http://%s/v2/info", client.cloudControllerURL))
 	if err != nil {

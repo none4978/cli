@@ -11,10 +11,7 @@ type APIInformation struct {
 	DopplerEndpoint              string `json:"doppler_logging_endpoint"`
 }
 
-func (client *CloudControllerClient) TargetCF(APIURL string, skipSSLValidation bool) (Warnings, error) {
-	client.cloudControllerURL = APIURL
-
-	client.connection = NewConnection(client.cloudControllerURL, skipSSLValidation)
+func (client *CloudControllerClient) TargetCF() (Warnings, error) {
 	request := Request{
 		RequestName: InfoRequest,
 	}

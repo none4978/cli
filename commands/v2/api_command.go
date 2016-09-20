@@ -15,7 +15,7 @@ import (
 
 type APIConfigActor interface {
 	ClearTarget()
-	SetTarget(CCAPI string, skipSSLValidation bool) (configactions.Warnings, error)
+	SetTarget() (configactions.Warnings, error)
 }
 
 type ApiCommand struct {
@@ -31,7 +31,8 @@ type ApiCommand struct {
 }
 
 func (cmd *ApiCommand) Setup(config commands.Config, ui commands.UI) error {
-	cmd.Actor = configactions.NewActor(config, cloudcontrollerv2.NewCloudControllerClient())
+	apiURL := cmd.processURL(cmd.OptionalArgs.URL)
+	cmd.Actor = configactions.NewActor(config, cloudcontrollerv2.NewCloudControllerClient(apiURL, cmd.SkipSSLValidation))
 	cmd.UI = ui
 	cmd.Config = config
 	return nil
@@ -85,14 +86,12 @@ func (cmd *ApiCommand) SetAPI() error {
 		"Endpoint": cmd.OptionalArgs.URL,
 	})
 
-	api := cmd.processURL(cmd.OptionalArgs.URL)
-
-	_, err := cmd.Actor.SetTarget(api, cmd.SkipSSLValidation)
+	_, err := cmd.Actor.SetTarget()
 	if err != nil {
 		return cmd.handleError(err)
 	}
 
-	if strings.HasPrefix(api, "http:") {
+	if strings.HasPrefix(cmd.OptionalArgs.URL, "http:") {
 		cmd.UI.DisplayText("Warning: Insecure http API endpoint detected: secure https API endpoints are recommended")
 	}
 
@@ -104,7 +103,6 @@ func (cmd *ApiCommand) SetAPI() error {
 func (_ ApiCommand) processURL(apiURL string) string {
 	if !strings.HasPrefix(apiURL, "http") {
 		return fmt.Sprintf("https://%s", apiURL)
-
 	}
 	return apiURL
 }
